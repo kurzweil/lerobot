@@ -1,6 +1,6 @@
 import time
 import torch
-from lerobot.common.policies.act.modeling_act import ACTPolicy
+from lerobot.common.policies.diffusion.modeling_diffusion import DiffusionPolicy
 from lerobot.common.robot_devices.utils import busy_wait
 from lerobot.common.robot_devices.robots.utils import Robot, make_robot_from_config
 from lerobot.common.robot_devices.robots.configs import So100RobotConfig
@@ -14,17 +14,18 @@ inference_time_s = 30
 fps = 30
 device = "mps"  # TODO: On Mac, use "mps" or "cpu"
 
-ckpt_path = "/Users/kkurzweil/Google Drive/My Drive/lerobot/outputs/train/act_so100_test_04/checkpoints/100000/pretrained_model"
+ckpt_path = "/Users/kkurzweil/Google Drive/My Drive/lerobot/outputs/train/diffusion_so100_test_02/checkpoints/040000/pretrained_model"
+#ckpt_path = "/Users/kkurzweil/Google Drive/My Drive/lerobot/outputs/train/act_so100_test_02/checkpoints/last/pretrained_model"
 #ckpt_path = "/Users/kkurzweil/Google Drive/My Drive/lerobot/outputs/train/act_so100_test_02/checkpoints/180000/pretrained_model"
 #ckpt_path = "/Users/kkurzweil/Google Drive/My Drive/development/lerobot/outputs/train/act_so100_test_02/checkpoints/last/pretrained_model/"
-policy = ACTPolicy.from_pretrained(ckpt_path)
+policy = DiffusionPolicy.from_pretrained(ckpt_path)
 policy.to(device)
 
 while True:
     print("loop")
-    #action = torch.tensor([5.8008, 128.4082, 120.2344, 72.8613, -82.0020, 14.0781])
-    #robot.send_action(action)
-    #busy_wait(2.000)
+    action = torch.tensor([5.8008, 128.4082, 120.2344, 72.8613, -82.0020, 14.0781])
+    robot.send_action(action)
+    busy_wait(2.000)
     for _ in range(inference_time_s * fps):
         start_time = time.perf_counter()
 
